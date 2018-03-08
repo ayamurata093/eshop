@@ -5,16 +5,24 @@
 <table>
   <thead>
     <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Note</th>
+      <th>Qty</th>
       <th colspan="3"></th>
+      
     </tr>
   </thead>
 
   <tbody>
-    <% @carts.each do |cart| %>
+    <% @products.each do |product| %>
       <tr>
-        <td><%= link_to 'Show', cart %></td>
-        <td><%= link_to 'Edit', edit_cart_path(cart) %></td>
-        <td><%= link_to 'Destroy', cart, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= product.name %></td>
+        <td><%= product.price %></td>
+        <td><%= product.note %></td>
+        <td>1</td>
+        <td><%= link_to 'prodcut詳細ページへ', product %></td>
+        <td><%= render 'carts/delete_button', user: @user, product: product %></td>
       </tr>
     <% end %>
   </tbody>
@@ -22,4 +30,4 @@
 
 <br>
 
-<%= link_to 'New Cart', new_cart_path %>
+<%#= link_to 'New Cart', new_cart_path %>

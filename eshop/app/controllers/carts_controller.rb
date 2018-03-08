@@ -4,7 +4,11 @@ class CartsController < ApplicationController
   # GET /carts
   # GET /carts.json
   def index
-    @carts = Cart.all
+    # @carts = Cart::find_by(user_id: session[:user_id])
+    @user = User::find(session[:user_id])
+    @products = @user.cart_products.page(params[:page])
+    
+    # binding.pry
   end
 
   # GET /carts/1
@@ -25,16 +29,26 @@ class CartsController < ApplicationController
   # POST /carts.json
   def create
     @cart = Cart.new(cart_params)
-
-    respond_to do |format|
-      if @cart.save
-        format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
-        format.json { render :show, status: :created, location: @cart }
-      else
-        format.html { render :new }
-        format.json { render json: @cart.errors, status: :unprocessable_entity }
-      end
+    @cart.product_id = params["product_id"]  
+    @cart.user_id = session[:user_id] 
+    
+    if @cart.save
+      flash[:success] = "カートに商品を追加しました。"
+      redirect_to carts_url
+    else
+      flash[:danger] = "カートに商品を追加することができませんでした。"
+      redirect_back(fallback_location: root_path)
     end
+  
+    # respond_to do |format|
+    #   if @cart.save
+    #     format.html { redirect_to @cart, notice: 'Cart was successfully created.' }
+    #     format.json { render :show, status: :created, location: @cart }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @cart.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /carts/1

@@ -7,5 +7,7 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
-  has_many :products
+  has_many :carts
+  
+  has_many :cart_products, through: :carts, source: :product
 end
